@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
+import { Button } from "@base-ui/react/button";
 
 function App() {
   const [message, setMessage] = useState("");
@@ -11,9 +12,10 @@ function App() {
   }, []);
 
   return (
-    <>
-      <h1 className="text-3xl font-bold underline">{message}</h1>
-    </>
+    <div className="flex flex-col items-center justify-center h-screen">
+      <h1 className="text-3xl font-bold">{message}</h1>
+      <Button>Click Me</Button>
+    </div>
   );
 }
 
