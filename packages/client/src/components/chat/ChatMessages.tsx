@@ -28,7 +28,7 @@ const ChatMessages = ({ messages }: Props) => {
    }, [messages]);
 
    return (
-      <div>
+      <div className="flex flex-col gap-2">
          {messages.map((message, index) => (
             <div
                key={message.id}
