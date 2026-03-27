@@ -1,5 +1,16 @@
+import fs from 'fs';
+import path from 'path';
+
 import { GoogleGenAI } from '@google/genai';
 import { conversationRepository } from '../repositories/conversation.repository';
+import template from '../prompts/chatbot.txt';
+
+const parkInfo = fs.readFileSync(
+   path.join(__dirname, '..', 'prompts', 'WonderWorld.md'),
+   'utf-8'
+);
+
+const systemInstruction = template.replace('{{parkInfo}}', parkInfo);
 
 // Implement detail
 const client = new GoogleGenAI({
@@ -23,8 +34,9 @@ export const chatService = {
          model: 'gemini-2.5-flash',
          contents: [...history, { role: 'user', parts: [{ text: prompt }] }],
          config: {
+            systemInstruction,
             temperature: 0.2,
-            maxOutputTokens: 100,
+            maxOutputTokens: 1000,
             thinkingConfig: {
                thinkingBudget: 0,
             },
