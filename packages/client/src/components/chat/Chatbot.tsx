@@ -7,6 +7,8 @@ import ChatInput, { type ChatFormData } from './ChatInput';
 import popSound from '@/assets/sounds/pop-sound.mp3';
 import notificationSound from '@/assets/sounds/notification-sound.mp3';
 import { Button } from '../ui/button';
+import ChatDisclamer from './ChatDisclamer';
+import Copyright from './Copyright';
 
 const popAudio = new Audio(popSound);
 popAudio.volume = 0.2;
@@ -132,8 +134,10 @@ const Chatbot = () => {
             </Button>
          )}
 
-         <div className="pt-6 border-t border-white/5">
+         <div className="px-4 py-6 border-t border-white/5">
             <ChatInput onSubmit={onSubmit} />
+            <ChatDisclamer />
+            <Copyright />
          </div>
       </div>
    );
