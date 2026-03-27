@@ -29,26 +29,30 @@ const ChatInput = ({ onSubmit }: ChatInputProps) => {
    return (
       <form
          onSubmit={submit}
-         className="flex flex-col gap-2 items-end border-2 p-4 rounded-3xl mt-4"
+         className="relative group transition-all duration-300"
       >
-         <textarea
-            {...register('prompt', {
-               required: 'Message is required',
-               validate: value => value.trim().length > 0,
-               maxLength: 100,
-            })}
-            onKeyDown={handleKeyDown}
-            placeholder="Ask me anything..."
-            className="w-full border-0 focus:outline-0 resize-none ml-2"
-         />
-         <Button
-            disabled={!formState.isValid}
-            type="submit"
-            size="icon-sm"
-            className="rounded-full bg-black text-white"
-         >
-            <FaArrowUp />
-         </Button>
+         <div className="absolute -inset-0.5 bg-linear-to-r from-purple-500 to-blue-500 rounded-3xl blur opacity-10 group-focus-within:opacity-30 transition duration-1000 group-hover:duration-200"></div>
+         <div className="relative flex items-center bg-slate-950/40 backdrop-blur-xl border border-white/5 rounded-[1.5rem] p-1.5 shadow-2xl">
+            <textarea
+               {...register('prompt', {
+                  required: 'Message is required',
+                  validate: value => value.trim().length > 0,
+                  maxLength: 1000,
+               })}
+               onKeyDown={handleKeyDown}
+               rows={1}
+               placeholder="How can I help you today?"
+               className="flex-1 bg-transparent px-4 py-4 text-slate-100 placeholder-slate-500 focus:outline-none resize-none min-h-[60px] max-h-[200px] text-sm md:text-base"
+            />
+            <Button
+               disabled={!formState.isValid}
+               type="submit"
+               size="icon-lg"
+               className="size-11 rounded-2xl bg-linear-to-tr from-purple-600 to-indigo-500 text-white shadow-lg shadow-purple-500/20 hover:shadow-purple-500/40 hover:scale-105 active:scale-95 transition-all disabled:opacity-30 disabled:grayscale disabled:scale-100"
+            >
+               <FaArrowUp className="w-5 h-5" />
+            </Button>
+         </div>
       </form>
    );
 };
