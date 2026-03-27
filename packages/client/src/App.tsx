@@ -1,9 +1,9 @@
 import './App.css';
-import Chatbot from './components/Chatbot';
+import Chatbot from './components/chat/Chatbot';
 
 function App() {
    return (
-      <div className="justify-center h-screen">
+      <div className="flex justify-center h-screen w-screen p-4">
          <Chatbot />
       </div>
    );
