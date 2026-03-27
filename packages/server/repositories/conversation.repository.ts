@@ -1,10 +1,16 @@
-const conversations = new Map<string, string>();
+type Message = {
+   role: 'user' | 'model';
+   parts: { text: string }[];
+};
+
+const conversations = new Map<string, Message[]>();
 
 export const conversationRepository = {
-   getLastResponseId: (conversationId: string) => {
-      return conversations.get(conversationId);
+   getHistory: (conversationId: string): Message[] => {
+      return conversations.get(conversationId) || [];
    },
-   setLastResponseId: (conversationId: string, responseId: string) => {
-      conversations.set(conversationId, responseId);
+   addMessage: (conversationId: string, message: Message) => {
+      const history = conversations.get(conversationId) || [];
+      conversations.set(conversationId, [...history, message]);
    },
 };

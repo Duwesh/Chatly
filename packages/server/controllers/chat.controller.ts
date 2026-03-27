@@ -3,11 +3,11 @@ import type { Request, Response } from 'express';
 import z from 'zod';
 
 const chatSchema = z.object({
-   message: z
+   prompt: z
       .string()
       .trim()
-      .min(1, 'Message is required')
-      .max(100, 'Message must be at most 100 characters'),
+      .min(1, 'Prompt is required')
+      .max(100, 'Prompt must be at most 100 characters'),
 });
 
 export const chatController = {
@@ -18,11 +18,8 @@ export const chatController = {
       }
 
       try {
-         const { message, conversationId } = req.body;
-         const response = await chatService.sendMessage(
-            message,
-            conversationId
-         );
+         const { prompt, conversationId } = req.body;
+         const response = await chatService.sendMessage(prompt, conversationId);
 
          res.json({ message: response.message });
       } catch (error: any) {

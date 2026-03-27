@@ -1,9 +1,9 @@
-import OpenAI from 'openai';
+import { GoogleGenAI } from '@google/genai';
 import { conversationRepository } from '../repositories/conversation.repository';
 
 // Implement detail
-const client = new OpenAI({
-   apiKey: process.env.OPENAI_API_KEY,
+const client = new GoogleGenAI({
+   apiKey: process.env.GOOGLE_API_KEY,
 });
 
 type ChatResponse = {
@@ -17,20 +17,39 @@ export const chatService = {
       prompt: string,
       conversationId: string
    ): Promise<ChatResponse> {
-      const response = await client.responses.create({
-         model: 'gpt-4o-mini',
-         input: prompt,
-         temperature: 0.2,
-         max_output_tokens: 100,
-         previous_response_id:
-            conversationRepository.getLastResponseId(conversationId),
+      const history = conversationRepository.getHistory(conversationId);
+
+      const response = await client.models.generateContent({
+         model: 'gemini-2.5-flash',
+         contents: [...history, { role: 'user', parts: [{ text: prompt }] }],
+         config: {
+            temperature: 0.2,
+            maxOutputTokens: 100,
+            thinkingConfig: {
+               thinkingBudget: 0,
+            },
+         },
       });
 
-      conversationRepository.setLastResponseId(conversationId, response.id);
+      const text =
+         response.text ||
+         response.candidates?.[0]?.content?.parts?.[0]?.text ||
+         '';
+
+      conversationRepository.addMessage(conversationId, {
+         role: 'user',
+         parts: [{ text: prompt }],
+      });
+      conversationRepository.addMessage(conversationId, {
+         role: 'model',
+         parts: [{ text }],
+      });
+
+      console.log('Gemini text:', text);
 
       return {
-         id: response.id,
-         message: response.output_text,
+         id: response.responseId!,
+         message: text,
       };
    },
 };
