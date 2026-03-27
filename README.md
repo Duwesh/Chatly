@@ -16,6 +16,7 @@
 [![Vite](https://img.shields.io/badge/Vite-6.x-646cff?style=flat-square&logo=vite&logoColor=white)](https://vitejs.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.x-38bdf8?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Zod](https://img.shields.io/badge/Zod-Validation-3068b7?style=flat-square)](https://zod.dev/)
+[![CI](https://github.com/Duwesh/Chatly/actions/workflows/ci.yml/badge.svg)](https://github.com/Duwesh/Chatly/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-22c55e?style=flat-square)](LICENSE)
 
 <br/>
@@ -70,6 +71,7 @@ Whether you're building a customer support bot, an internal knowledge assistant,
 - **Prettier** pre-configured for consistent code formatting
 - **ESLint** with strict rules for code quality enforcement
 - **Husky** + **lint-staged** for automated pre-commit checks
+- **GitHub Actions** for automated CI (Linting, Type-checking, Building)
 - Monorepo managed with **Bun workspaces**
 - One-command setup and development startup
 
@@ -264,21 +266,18 @@ VITE_ENABLE_STREAMING=true
 
 Run all scripts from the **root** of the monorepo using `bun run <script>`.
 
-| Script                 | Description                                      |
-| ---------------------- | ------------------------------------------------ |
-| `bun run dev`          | Start both client and server in development mode |
-| `bun run dev:client`   | Start only the Vite dev server                   |
-| `bun run dev:server`   | Start only the Bun/Express server                |
-| `bun run build`        | Build both packages for production               |
-| `bun run build:client` | Build only the React client                      |
-| `bun run build:server` | Type-check and compile only the server           |
-| `bun run lint`         | Run ESLint across all packages                   |
-| `bun run lint:fix`     | Run ESLint with auto-fix                         |
-| `bun run format`       | Format all files with Prettier                   |
-| `bun run format:check` | Check formatting without writing                 |
-| `bun run typecheck`    | Run `tsc --noEmit` across all packages           |
-| `bun run test`         | Run all tests                                    |
-| `bun run clean`        | Remove all `node_modules` and build artifacts    |
+| Script                 | Description                                                   |
+| ---------------------- | ------------------------------------------------------------- |
+| `bun run dev`          | Start both client and server concurrently in development mode |
+| `bun run dev:client`   | Start the Vite dev server for the React client                |
+| `bun run dev:server`   | Start the Bun/Express server for the backend                  |
+| `bun run build`        | Build the client for production                               |
+| `bun run build:client` | Build only the React client                                   |
+| `bun run lint`         | Run ESLint across the client package                          |
+| `bun run format`       | Format all files in the monorepo with Prettier                |
+| `bun run format:check` | Check formatting across the monorepo                          |
+| `bun run typecheck`    | Run static type checks across both client and server          |
+| `bun run prepare`      | Initialize Husky git hooks                                    |
 
 ---
 
