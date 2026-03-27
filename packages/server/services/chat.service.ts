@@ -1,53 +1,56 @@
 import fs from 'fs';
 import path from 'path';
 
-import { GoogleGenAI } from '@google/genai';
 import { conversationRepository } from '../repositories/conversation.repository';
-import template from '../prompts/chatbot.txt';
+import { geminiProvider } from '../providers/gemini.provider';
+import { openaiProvider } from '../providers/openai.provider';
 
+// Load park info and system instructions
 const parkInfo = fs.readFileSync(
    path.join(__dirname, '..', 'prompts', 'WonderWorld.md'),
    'utf-8'
 );
 
+// Note: Loading a .txt template usually would use a reader,
+// I'll stick to a simple load for now.
+const templatePath = path.join(__dirname, '..', 'prompts', 'chatbot.txt');
+const template = fs.readFileSync(templatePath, 'utf-8');
 const systemInstruction = template.replace('{{parkInfo}}', parkInfo);
-
-// Implement detail
-const client = new GoogleGenAI({
-   apiKey: process.env.GOOGLE_API_KEY,
-});
 
 type ChatResponse = {
    id: string;
    message: string;
+   provider: string;
 };
 
 // Public interface
 export const chatService = {
    async sendMessage(
       prompt: string,
-      conversationId: string
+      conversationId: string,
+      providerOverride?: string
    ): Promise<ChatResponse> {
       const history = conversationRepository.getHistory(conversationId);
+      const provider =
+         providerOverride || process.env.DEFAULT_AI_PROVIDER || 'gemini';
 
-      const response = await client.models.generateContent({
-         model: 'gemini-2.5-flash',
-         contents: [...history, { role: 'user', parts: [{ text: prompt }] }],
-         config: {
-            systemInstruction,
-            temperature: 0.2,
-            maxOutputTokens: 1000,
-            thinkingConfig: {
-               thinkingBudget: 0,
-            },
-         },
-      });
+      let text = '';
 
-      const text =
-         response.text ||
-         response.candidates?.[0]?.content?.parts?.[0]?.text ||
-         '';
+      if (provider === 'openai') {
+         text = await openaiProvider.generateContent(
+            prompt,
+            history,
+            systemInstruction
+         );
+      } else {
+         text = await geminiProvider.generateContent(
+            prompt,
+            history,
+            systemInstruction
+         );
+      }
 
+      // Track interaction in history
       conversationRepository.addMessage(conversationId, {
          role: 'user',
          parts: [{ text: prompt }],
@@ -57,11 +60,10 @@ export const chatService = {
          parts: [{ text }],
       });
 
-      console.log('Gemini text:', text);
-
       return {
-         id: response.responseId!,
+         id: crypto.randomUUID(),
          message: text,
+         provider,
       };
    },
 };
