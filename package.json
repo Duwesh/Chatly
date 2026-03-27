@@ -1,24 +1,32 @@
 {
-  "name": "my-app",
-  "module": "index.ts",
-  "type": "module",
-  "private": true,
-  "scripts": {
-    "dev": "bun run index.ts",
-    "format": "prettier --write .",
-    "prepare": "husky"
-  },
-  "devDependencies": {
-    "@types/bun": "latest",
-    "concurrently": "^9.2.1",
-    "husky": "^9.1.7",
-    "lint-staged": "^16.4.0",
-    "prettier": "^3.8.1"
-  },
-  "peerDependencies": {
-    "typescript": "^5"
-  },
-  "workspaces": [
-    "packages/*"
-  ]
+   "name": "my-app",
+   "module": "index.ts",
+   "type": "module",
+   "private": true,
+   "scripts": {
+      "dev": "concurrently \"bun run dev:server\" \"bun run dev:client\"",
+      "dev:server": "bun run --cwd packages/server dev",
+      "dev:client": "bun run --cwd packages/client dev",
+      "build": "bun run build:client",
+      "build:client": "bun run --cwd packages/client build",
+      "lint": "bun run --cwd packages/client lint",
+      "typecheck": "bun run --cwd packages/client typecheck && bun run --cwd packages/server typecheck",
+      "format": "prettier --write .",
+      "format:check": "prettier --check .",
+      "prepare": "husky"
+   },
+   "devDependencies": {
+      "@types/bun": "latest",
+      "concurrently": "^9.2.1",
+      "husky": "^9.1.7",
+      "lint-staged": "^16.4.0",
+      "prettier": "^3.8.1",
+      "typescript": "^5.7.3"
+   },
+   "peerDependencies": {
+      "typescript": "^5"
+   },
+   "workspaces": [
+      "packages/*"
+   ]
 }

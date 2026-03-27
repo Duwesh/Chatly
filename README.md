@@ -37,12 +37,14 @@ Whether you're building a customer support bot, an internal knowledge assistant,
 ## ✨ Features
 
 ### 🤖 AI-Powered Intelligence
+
 - Multi-provider AI support via **Google Generative AI** (`@google/genai`) and the **OpenAI SDK**
 - Context-aware, multi-turn conversations with conversation history management
 - Easily swap or combine AI providers per use case
 - Streaming response support for low-latency, real-time output
 
 ### 🖥️ Modern Frontend
+
 - Built with **React 19** and **TypeScript** for type-safe, component-driven UI
 - Lightning-fast HMR dev experience powered by **Vite**
 - Responsive, accessible design using **Tailwind CSS**
@@ -50,18 +52,21 @@ Whether you're building a customer support bot, an internal knowledge assistant,
 - Clean chat interface with message threading, loading states, and error handling
 
 ### ⚡ High-Performance Backend
+
 - **Express** server running on the **Bun** runtime for exceptional throughput
 - Native TypeScript support — no build step required for the server
 - Structured, modular route and controller architecture
 - Middleware-first design for auth, logging, rate limiting, and error handling
 
 ### 🔒 Type Safety & Validation
+
 - End-to-end **TypeScript** across the entire monorepo
 - **Zod** schemas for strict request/response validation at API boundaries
 - Shared type definitions between client and server packages
 - Runtime safety with zero-cost abstractions
 
 ### 🛠️ Developer-First Workflow
+
 - **Prettier** pre-configured for consistent code formatting
 - **ESLint** with strict rules for code quality enforcement
 - **Husky** + **lint-staged** for automated pre-commit checks
@@ -153,11 +158,11 @@ User Input
 
 Before you begin, make sure you have the following installed:
 
-| Tool | Version | Purpose |
-|------|---------|---------|
-| [Bun](https://bun.sh/) | `>= 1.1.0` | Package manager & server runtime |
-| [Node.js](https://nodejs.org/) | `>= 20.x` | Required for some tooling |
-| [Git](https://git-scm.com/) | Latest | Version control |
+| Tool                           | Version    | Purpose                          |
+| ------------------------------ | ---------- | -------------------------------- |
+| [Bun](https://bun.sh/)         | `>= 1.1.0` | Package manager & server runtime |
+| [Node.js](https://nodejs.org/) | `>= 20.x`  | Required for some tooling        |
+| [Git](https://git-scm.com/)    | Latest     | Version control                  |
 
 ### Installation
 
@@ -259,21 +264,21 @@ VITE_ENABLE_STREAMING=true
 
 Run all scripts from the **root** of the monorepo using `bun run <script>`.
 
-| Script | Description |
-|--------|-------------|
-| `bun run dev` | Start both client and server in development mode |
-| `bun run dev:client` | Start only the Vite dev server |
-| `bun run dev:server` | Start only the Bun/Express server |
-| `bun run build` | Build both packages for production |
-| `bun run build:client` | Build only the React client |
-| `bun run build:server` | Type-check and compile only the server |
-| `bun run lint` | Run ESLint across all packages |
-| `bun run lint:fix` | Run ESLint with auto-fix |
-| `bun run format` | Format all files with Prettier |
-| `bun run format:check` | Check formatting without writing |
-| `bun run typecheck` | Run `tsc --noEmit` across all packages |
-| `bun run test` | Run all tests |
-| `bun run clean` | Remove all `node_modules` and build artifacts |
+| Script                 | Description                                      |
+| ---------------------- | ------------------------------------------------ |
+| `bun run dev`          | Start both client and server in development mode |
+| `bun run dev:client`   | Start only the Vite dev server                   |
+| `bun run dev:server`   | Start only the Bun/Express server                |
+| `bun run build`        | Build both packages for production               |
+| `bun run build:client` | Build only the React client                      |
+| `bun run build:server` | Type-check and compile only the server           |
+| `bun run lint`         | Run ESLint across all packages                   |
+| `bun run lint:fix`     | Run ESLint with auto-fix                         |
+| `bun run format`       | Format all files with Prettier                   |
+| `bun run format:check` | Check formatting without writing                 |
+| `bun run typecheck`    | Run `tsc --noEmit` across all packages           |
+| `bun run test`         | Run all tests                                    |
+| `bun run clean`        | Remove all `node_modules` and build artifacts    |
 
 ---
 
@@ -291,39 +296,39 @@ Send a message and receive an AI response.
 
 ```json
 {
-  "message": "Explain the concept of recursion in simple terms.",
-  "conversationId": "conv_abc123",
-  "provider": "gemini",
-  "history": [
-    { "role": "user", "content": "Hello!" },
-    { "role": "assistant", "content": "Hi there! How can I help you today?" }
-  ]
+   "message": "Explain the concept of recursion in simple terms.",
+   "conversationId": "conv_abc123",
+   "provider": "gemini",
+   "history": [
+      { "role": "user", "content": "Hello!" },
+      { "role": "assistant", "content": "Hi there! How can I help you today?" }
+   ]
 }
 ```
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `message` | `string` | ✅ | The user's message |
-| `conversationId` | `string` | ❌ | ID to group messages into a conversation |
-| `provider` | `"gemini" \| "openai"` | ❌ | AI provider override (defaults to `DEFAULT_AI_PROVIDER`) |
-| `history` | `array` | ❌ | Prior messages for context |
+| Field            | Type                   | Required | Description                                              |
+| ---------------- | ---------------------- | -------- | -------------------------------------------------------- |
+| `message`        | `string`               | ✅       | The user's message                                       |
+| `conversationId` | `string`               | ❌       | ID to group messages into a conversation                 |
+| `provider`       | `"gemini" \| "openai"` | ❌       | AI provider override (defaults to `DEFAULT_AI_PROVIDER`) |
+| `history`        | `array`                | ❌       | Prior messages for context                               |
 
 **Response `200 OK`**
 
 ```json
 {
-  "success": true,
-  "data": {
-    "message": "Recursion is when a function calls itself...",
-    "conversationId": "conv_abc123",
-    "provider": "gemini",
-    "model": "gemini-2.0-flash",
-    "usage": {
-      "promptTokens": 48,
-      "completionTokens": 112,
-      "totalTokens": 160
-    }
-  }
+   "success": true,
+   "data": {
+      "message": "Recursion is when a function calls itself...",
+      "conversationId": "conv_abc123",
+      "provider": "gemini",
+      "model": "gemini-2.0-flash",
+      "usage": {
+         "promptTokens": 48,
+         "completionTokens": 112,
+         "totalTokens": 160
+      }
+   }
 }
 ```
 
@@ -331,11 +336,11 @@ Send a message and receive an AI response.
 
 ```json
 {
-  "success": false,
-  "error": {
-    "code": "VALIDATION_ERROR",
-    "message": "message field is required and must be a non-empty string."
-  }
+   "success": false,
+   "error": {
+      "code": "VALIDATION_ERROR",
+      "message": "message field is required and must be a non-empty string."
+   }
 }
 ```
 
@@ -365,9 +370,9 @@ Health check endpoint.
 
 ```json
 {
-  "status": "ok",
-  "timestamp": "2025-03-27T10:00:00.000Z",
-  "uptime": 3600
+   "status": "ok",
+   "timestamp": "2025-03-27T10:00:00.000Z",
+   "uptime": 3600
 }
 ```
 
@@ -377,34 +382,34 @@ Health check endpoint.
 
 ### Frontend (`packages/client`)
 
-| Technology | Purpose |
-|------------|---------|
-| [React 19](https://react.dev/) | UI component framework |
-| [TypeScript](https://www.typescriptlang.org/) | Static type safety |
-| [Vite](https://vitejs.dev/) | Build tool & dev server |
-| [Tailwind CSS](https://tailwindcss.com/) | Utility-first styling |
-| [Shadcn/UI](https://ui.shadcn.com/) | Component design patterns |
-| [Zod](https://zod.dev/) | Client-side schema validation |
+| Technology                                    | Purpose                       |
+| --------------------------------------------- | ----------------------------- |
+| [React 19](https://react.dev/)                | UI component framework        |
+| [TypeScript](https://www.typescriptlang.org/) | Static type safety            |
+| [Vite](https://vitejs.dev/)                   | Build tool & dev server       |
+| [Tailwind CSS](https://tailwindcss.com/)      | Utility-first styling         |
+| [Shadcn/UI](https://ui.shadcn.com/)           | Component design patterns     |
+| [Zod](https://zod.dev/)                       | Client-side schema validation |
 
 ### Backend (`packages/server`)
 
-| Technology | Purpose |
-|------------|---------|
-| [Bun](https://bun.sh/) | JavaScript runtime & package manager |
-| [Express](https://expressjs.com/) | HTTP server framework |
-| [TypeScript](https://www.typescriptlang.org/) | Static type safety |
-| [@google/genai](https://www.npmjs.com/package/@google/genai) | Google Gemini AI SDK |
-| [openai](https://www.npmjs.com/package/openai) | OpenAI GPT SDK |
-| [Zod](https://zod.dev/) | API request/response validation |
+| Technology                                                   | Purpose                              |
+| ------------------------------------------------------------ | ------------------------------------ |
+| [Bun](https://bun.sh/)                                       | JavaScript runtime & package manager |
+| [Express](https://expressjs.com/)                            | HTTP server framework                |
+| [TypeScript](https://www.typescriptlang.org/)                | Static type safety                   |
+| [@google/genai](https://www.npmjs.com/package/@google/genai) | Google Gemini AI SDK                 |
+| [openai](https://www.npmjs.com/package/openai)               | OpenAI GPT SDK                       |
+| [Zod](https://zod.dev/)                                      | API request/response validation      |
 
 ### Tooling (Root)
 
-| Technology | Purpose |
-|------------|---------|
-| [Husky](https://typicode.github.io/husky/) | Git hooks management |
-| [lint-staged](https://github.com/lint-staged/lint-staged) | Run linters on staged files |
-| [ESLint](https://eslint.org/) | Code quality & style enforcement |
-| [Prettier](https://prettier.io/) | Opinionated code formatting |
+| Technology                                                | Purpose                          |
+| --------------------------------------------------------- | -------------------------------- |
+| [Husky](https://typicode.github.io/husky/)                | Git hooks management             |
+| [lint-staged](https://github.com/lint-staged/lint-staged) | Run linters on staged files      |
+| [ESLint](https://eslint.org/)                             | Code quality & style enforcement |
+| [Prettier](https://prettier.io/)                          | Opinionated code formatting      |
 
 ---
 
@@ -457,15 +462,15 @@ Then open a PR on GitHub against the `main` branch. Please describe what your PR
 
 This project uses [Conventional Commits](https://www.conventionalcommits.org/):
 
-| Prefix | When to use |
-|--------|------------|
-| `feat:` | New feature |
-| `fix:` | Bug fix |
-| `docs:` | Documentation changes |
-| `style:` | Formatting, no logic change |
-| `refactor:` | Code restructuring |
-| `test:` | Adding or updating tests |
-| `chore:` | Build, tooling, dependency updates |
+| Prefix      | When to use                        |
+| ----------- | ---------------------------------- |
+| `feat:`     | New feature                        |
+| `fix:`      | Bug fix                            |
+| `docs:`     | Documentation changes              |
+| `style:`    | Formatting, no logic change        |
+| `refactor:` | Code restructuring                 |
+| `test:`     | Adding or updating tests           |
+| `chore:`    | Build, tooling, dependency updates |
 
 ---
 
