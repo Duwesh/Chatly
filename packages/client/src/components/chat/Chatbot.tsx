@@ -3,6 +3,14 @@ import { useCallback, useRef, useState } from 'react';
 import TypingIndicator from './TypingIndicator';
 import ChatMessages, { type Message } from './ChatMessages';
 import ChatInput, { type ChatFormData } from './ChatInput';
+import popSound from '@/assets/sounds/pop-sound.mp3';
+import notificationSound from '@/assets/sounds/notification-sound.mp3';
+
+const popAudio = new Audio(popSound);
+popAudio.volume = 0.2;
+
+const notificationAudio = new Audio(notificationSound);
+notificationAudio.volume = 0.2;
 
 type ChatResponse = {
    message: string;
@@ -17,7 +25,6 @@ const Chatbot = () => {
 
    const onSubmit = useCallback(async ({ prompt }: ChatFormData) => {
       try {
-         setError('');
          setIsBotTyping(true);
          setMessages(prev => [
             ...prev,
@@ -27,6 +34,8 @@ const Chatbot = () => {
                role: 'user',
             },
          ]);
+         setError('');
+         popAudio.play();
 
          const { data } = await axios.post<ChatResponse>('/api/chat', {
             prompt,
@@ -41,7 +50,7 @@ const Chatbot = () => {
                role: 'assistant',
             },
          ]);
-         setIsBotTyping(false);
+         notificationAudio.play();
       } catch (error: unknown) {
          setError(
             error instanceof Error
