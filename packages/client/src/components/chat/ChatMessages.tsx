@@ -24,7 +24,7 @@ const ChatMessages = ({ messages }: Props) => {
    return (
       <div className="flex flex-col gap-6">
          {messages.length === 0 && (
-            <div className="flex-1 flex flex-col items-center justify-center py-10 text-center animate-in fade-in zoom-in duration-700">
+            <div className="flex-1 flex flex-col items-center justify-center py-1 text-center animate-in fade-in zoom-in duration-700">
                <div className="w-14 h-14 bg-linear-to-tr from-purple-600/20 to-blue-500/20 rounded-full flex items-center justify-center mb-3">
                   <svg
                      className="w-7 h-7 text-purple-400 opacity-50"
@@ -40,7 +40,7 @@ const ChatMessages = ({ messages }: Props) => {
                      />
                   </svg>
                </div>
-               <h3 className="text-slate-200 text-xl font-medium mb-2">
+               <h3 className="text-slate-200 text-xl font-medium mb-1">
                   Welcome to Chatly
                </h3>
                <p className="text-slate-500 max-w-xs">

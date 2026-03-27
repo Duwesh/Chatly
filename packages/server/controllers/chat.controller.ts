@@ -22,10 +22,26 @@ export const chatController = {
          const response = await chatService.sendMessage(prompt, conversationId);
 
          res.json({ message: response.message });
-      } catch (error: any) {
-         console.log({ error });
+      } catch (err: unknown) {
+         const error = err as any;
+
+         // Check for quota or rate limit errors (Gemini/OpenAI)
+         const isQuotaError =
+            error?.status === 429 ||
+            error?.message?.toLowerCase().includes('quota') ||
+            error?.message?.toLowerCase().includes('rate limit') ||
+            error?.response?.status === 429;
+
+         if (isQuotaError) {
+            return res.status(429).json({
+               message:
+                  "I've reached my message limit for now. Please come back a bit later and we can continue our chat! ❤️",
+               type: 'QUOTA_EXCEEDED',
+            });
+         }
+
          res.status(500).json({
-            message: error.message || 'Failed to generate response',
+            message: error?.message || 'Failed to generate response',
          });
       }
    },

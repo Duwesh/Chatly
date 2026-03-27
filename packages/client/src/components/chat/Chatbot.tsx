@@ -9,6 +9,7 @@ import notificationSound from '@/assets/sounds/notification-sound.mp3';
 import { Button } from '../ui/button';
 import ChatDisclamer from './ChatDisclamer';
 import Copyright from './Copyright';
+import QuotaLimitReached from './QuotaLimitReached';
 
 const popAudio = new Audio(popSound);
 popAudio.volume = 0.2;
@@ -25,6 +26,7 @@ const Chatbot = () => {
    const [messages, setMessages] = useState<Message[]>([]);
    const [isBotTyping, setIsBotTyping] = useState(false);
    const [error, setError] = useState('');
+   const [isQuotaExceeded, setIsQuotaExceeded] = useState(false);
    const [showScrollButton, setShowScrollButton] = useState(false);
    const scrollRef = useRef<HTMLDivElement>(null);
    const conversationId = useRef(crypto.randomUUID());
@@ -77,12 +79,19 @@ const Chatbot = () => {
             },
          ]);
          notificationAudio.play();
-      } catch (error: unknown) {
-         setError(
-            error instanceof Error
-               ? error.message
-               : 'Something went wrong, try again'
-         );
+      } catch (err: unknown) {
+         if (axios.isAxiosError(err) && err.response?.status === 429) {
+            setIsQuotaExceeded(true);
+            setError(''); // We'll show the specialized UI instead of the generic alert
+         } else {
+            setError(
+               axios.isAxiosError(err)
+                  ? err.response?.data?.message || err.message
+                  : err instanceof Error
+                    ? err.message
+                    : 'Something went wrong, try again'
+            );
+         }
       } finally {
          setIsBotTyping(false);
       }
@@ -135,7 +144,11 @@ const Chatbot = () => {
          )}
 
          <div className="px-4 py-6 border-t border-white/5">
-            <ChatInput onSubmit={onSubmit} />
+            {isQuotaExceeded ? (
+               <QuotaLimitReached />
+            ) : (
+               <ChatInput onSubmit={onSubmit} />
+            )}
             <ChatDisclamer />
             <Copyright />
          </div>
